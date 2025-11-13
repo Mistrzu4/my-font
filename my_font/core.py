@@ -4,7 +4,8 @@ from plugin import InvenTreePlugin
 
 from plugin.mixins import SettingsMixin, UserInterfaceMixin
 
-from . import PLUGIN_VERSION
+
+PLUGIN_VERSION = "0.0.1"
 
 
 class myfont(SettingsMixin, UserInterfaceMixin, InvenTreePlugin):
