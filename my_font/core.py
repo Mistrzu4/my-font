@@ -55,22 +55,22 @@ class myfont(IconPackMixin, InvenTreePlugin):
     # Ref: https://docs.inventree.org/en/latest/plugins/mixins/ui/
     
     # Custom UI panels
-    
+        
     def icon_packs(self):
         """Return a list of custom icon packs."""
         return [
             IconPack(
                 name='My Custom Icons',
                 prefix='my',
-                fonts={
-                    'truetype': static('plugins/my-custom-plugin/icons/boxicons.ttf'),
-                },
+                # fonts={}  <- pominięte całkowicie
                 icons={
                     'my-icon': {
                         'name': 'My Icon',
                         'category': '',
                         'tags': ['my', 'icon'],
-                        'variants': {'default': 'bx-message-circle-heart'}
+                        'variants': {
+                            'default': 'bx-message-circle-heart'  # tylko nazwa ikony z fontu
+                        }
                     }
                 },
             )
