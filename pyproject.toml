@@ -1,3 +1,6 @@
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
+[options.entry_points]
+inventree.plugins =
+    my-font = my_font.plugin:MyFontPlugin
