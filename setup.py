@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'django>=3.2',  # lub wersja kompatybilna z Twoim InvenTree
+        'django>=3.2',  # dopasuj do wersji InvenTree
     ],
     entry_points={
         'inventree.plugins': [
