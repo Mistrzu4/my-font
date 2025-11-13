@@ -1,14 +1,15 @@
-"""A short d"""
+from django.templatetags.static import static
 
-from plugin import InvenTreePlugin
-
-from plugin.mixins import SettingsMixin, UserInterfaceMixin
+from common.icons import IconPack
+from plugin.base.icons.mixins import IconPackMixin
+from plugin.plugin import InvenTreePlugin
 
 
 PLUGIN_VERSION = "0.0.1"
 
 
-class myfont(SettingsMixin, UserInterfaceMixin, InvenTreePlugin):
+
+class myfont(IconPackMixin, InvenTreePlugin):
 
     """myfont - custom InvenTree plugin."""
 
@@ -54,50 +55,23 @@ class myfont(SettingsMixin, UserInterfaceMixin, InvenTreePlugin):
     # Ref: https://docs.inventree.org/en/latest/plugins/mixins/ui/
     
     # Custom UI panels
-    def get_ui_panels(self, request, context: dict, **kwargs):
-        """Return a list of custom panels to be rendered in the InvenTree user interface."""
-
-        panels = []
-
-        # Only display this panel for the 'part' target
-        if context.get('target_model') == 'part':
-            panels.append({
-                'key': 'my-font-panel',
-                'title': 'my font',
-                'description': 'Custom panel description',
-                'icon': 'ti:mood-smile:outline',
-                'source': self.plugin_static_file('Panel.js:rendermyfontPanel'),
-                'context': {
-                    # Provide additional context data to the panel
-                    'settings': self.get_settings_dict(),
-                    'foo': 'bar'
-                }
-            })
-        
-        return panels
     
-
-    # Custom dashboard items
-    def get_ui_dashboard_items(self, request, context: dict, **kwargs):
-        """Return a list of custom dashboard items to be rendered in the InvenTree user interface."""
-
-        # Example: only display for 'staff' users
-        if not request.user or not request.user.is_staff:
-            return []
-        
-        items = []
-
-        items.append({
-            'key': 'my-font-dashboard',
-            'title': 'my font Dashboard Item',
-            'description': 'Custom dashboard item',
-            'icon': 'ti:dashboard:outline',
-            'source': self.plugin_static_file('Dashboard.js:rendermyfontDashboardItem'),
-            'context': {
-                # Provide additional context data to the dashboard item
-                'settings': self.get_settings_dict(),
-                'bar': 'foo'
-            }
-        })
-
-        return items
+    def icon_packs(self):
+        """Return a list of custom icon packs."""
+        return [
+            IconPack(
+                name='My Custom Icons',
+                prefix='my',
+                fonts={
+                    'truetype': static('plugins/my-custom-plugin/icons/boxicons.ttf'),
+                },
+                icons={
+                    'my-icon': {
+                        'name': 'My Icon',
+                        'category': '',
+                        'tags': ['my', 'icon'],
+                        'variants': {'default': 'bx-message-circle-heart'}
+                    }
+                },
+            )
+        ]
