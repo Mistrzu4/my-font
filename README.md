@@ -1,11 +1,25 @@
-# My Font Plugin
+# myfont
 
-Minimalny plugin dla InvenTree dodający czcionkę TrueType `boxicons.ttf`.
+A short d
 
-## Instalacja
+## Installation
 
-1. Skopiuj katalog `my-font` do swojego repozytorium lub zainstaluj przez pip.
-2. Aktywuj plugin w panelu administracyjnym InvenTree.
+### InvenTree Plugin Manager
 
-## Struktura
+... todo ...
 
+### Command Line 
+
+To install manually via the command line, run the following command:
+
+```bash
+pip install my-font
+```
+
+## Configuration
+
+... todo ...
+
+## Usage
+
+... todo ...
