@@ -1,58 +1,24 @@
 from django.templatetags.static import static
-
 from common.icons import IconPack
 from plugin.base.icons.mixins import IconPackMixin
 from plugin.plugin import InvenTreePlugin
 from django.http import JsonResponse
-
+from django.urls import path
 
 PLUGIN_VERSION = "0.0.1"
 
-
-
 class myfont(IconPackMixin, InvenTreePlugin):
-
-
-
-    def debug_icon_packs(request):
-        packs = self.icon_packs()
-        urls = [pack.fonts['truetype'] for pack in packs]
-        return JsonResponse({"fonts": urls})
-
-    def urls(self):
-        return [path("debug-icon-packs/", debug_icon_packs)]
-
-
-    def register_urls(self):
-        """Zarejestruj tymczasowe URL do debugowania."""
-        from django.urls import path
-
-        def debug_font_url(request):
-            from django.templatetags.static import static
-            font_url = static('plugins/myfont/icons/boxicons.ttf')
-            return JsonResponse({"font_url": font_url})
-
-        return [
-            path("debug-font/", debug_font_url),
-        ]
-
-    """myfont - custom InvenTree plugin."""
-
-    # Plugin metadata
     TITLE = "my font"
     NAME = "myfont"
     SLUG = "my-font"
     DESCRIPTION = "A short d"
     VERSION = PLUGIN_VERSION
-
     AUTHOR = "Filip Hajduk"
     WEBSITE = "https://github.com/Mistrzu4/my-font"
     LICENSE = "MIT"
-
     ADMIN_SOURCE = "Settings.js:renderPluginSettings"
-    
+
     SETTINGS = {
-        # Define your plugin settings here...
         'CUSTOM_VALUE': {
             'name': 'Custom Value',
             'description': 'A custom value',
@@ -60,9 +26,8 @@ class myfont(IconPackMixin, InvenTreePlugin):
             'default': 42,
         }
     }
-    
-    def icon_packs(self):
 
+    def icon_packs(self):
         font_url = static('plugins/myfont/icons/boxicons.ttf')
 
         # DEBUG: zapisz URL do pliku w kontenerze
@@ -74,25 +39,27 @@ class myfont(IconPackMixin, InvenTreePlugin):
             with open("/tmp/myfont_url.txt", "w") as f:
                 f.write(f"ERROR: {e}\n{traceback.format_exc()}")
 
-
-                
-        """Return a list of custom icon packs."""
         return [
             IconPack(
                 name='My Custom Icons',
                 prefix='my',
-                fonts={
-                    'truetype': static('plugins/my-custom-plugin/icons/boxicons.ttf'),
-                },
+                fonts={'truetype': font_url},
                 icons={
                     'my-icon': {
                         'name': 'My Icon',
                         'category': '',
                         'tags': ['my', 'icon'],
-                        'variants': {
-                            'default': 'bx-message-circle-heart'  # tylko nazwa ikony z fontu
-                        }
+                        'variants': {'default': 'bx-message-circle-heart'}
                     }
                 },
             )
         ]
+
+    def register_urls(self):
+        """Tymczasowy endpoint debugowy."""
+        def debug_font_url(request):
+            font_url = static('plugins/myfont/icons/boxicons.ttf')
+            return JsonResponse({"font_url": font_url})
+
+        return [
+            path("debug-font/", debug
