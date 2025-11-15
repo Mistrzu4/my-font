@@ -27,15 +27,12 @@ class myfont(IconPackMixin, InvenTreePlugin):
     }
 
     def register_urls(self):
-        """Rejestruje tymczasowy URL do debugowania fontu."""
-
         from django.urls import path
-        from django.templatetags.static import static
         from django.http import JsonResponse
+        from django.templatetags.static import static
 
         def debug_font_url(request):
-            font_url = static('plugins/myfont/icons/boxicons.ttf')
-            # DEBUG: zapisz do pliku w kontenerze
+            font_url = static('plugins/my-font/icons/boxicons.ttf')
             try:
                 with open("/tmp/myfont_url.txt", "w") as f:
                     f.write(font_url)
@@ -44,5 +41,6 @@ class myfont(IconPackMixin, InvenTreePlugin):
                     f.write(f"ERROR: {e}")
             return JsonResponse({"font_url": font_url})
 
-        # Zwracamy listę URL-i **wewnątrz metody**
-        return [path("debug-font/", debug_font_url)]
+        return [
+            path("debug-font/", debug_font_url),
+        ]
