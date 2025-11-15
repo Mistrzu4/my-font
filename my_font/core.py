@@ -37,6 +37,20 @@ class myfont(IconPackMixin, InvenTreePlugin):
     }
     
     def icon_packs(self):
+
+        font_url = static('plugins/myfont/icons/boxicons.ttf')
+
+        # DEBUG: zapisz URL do pliku w kontenerze
+        try:
+            with open("/tmp/myfont_url.txt", "w") as f:
+                f.write(font_url)
+        except Exception as e:
+            import traceback
+            with open("/tmp/myfont_url.txt", "w") as f:
+                f.write(f"ERROR: {e}\n{traceback.format_exc()}")
+
+
+                
         """Return a list of custom icon packs."""
         return [
             IconPack(
