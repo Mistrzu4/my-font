@@ -9,15 +9,19 @@ from django.http import JsonResponse
 PLUGIN_VERSION = "0.0.1"
 
 
-def debug_icon_packs(request):
-    packs = self.icon_packs()
-    urls = [pack.fonts['truetype'] for pack in packs]
-    return JsonResponse({"fonts": urls})
-
-def urls(self):
-    return [path("debug-icon-packs/", debug_icon_packs)]
 
 class myfont(IconPackMixin, InvenTreePlugin):
+
+
+
+    def debug_icon_packs(request):
+        packs = self.icon_packs()
+        urls = [pack.fonts['truetype'] for pack in packs]
+        return JsonResponse({"fonts": urls})
+
+    def urls(self):
+        return [path("debug-icon-packs/", debug_icon_packs)]
+
 
     """myfont - custom InvenTree plugin."""
 
