@@ -1,24 +1,33 @@
 from django.templatetags.static import static
+
 from common.icons import IconPack
 from plugin.base.icons.mixins import IconPackMixin
 from plugin.plugin import InvenTreePlugin
-from django.http import JsonResponse
-from django.urls import path
+
 
 PLUGIN_VERSION = "0.0.1"
 
+
+
 class myfont(IconPackMixin, InvenTreePlugin):
+
+    """myfont - custom InvenTree plugin."""
+
+    # Plugin metadata
     TITLE = "my font"
     NAME = "myfont"
     SLUG = "my-font"
     DESCRIPTION = "A short d"
     VERSION = PLUGIN_VERSION
+
     AUTHOR = "Filip Hajduk"
     WEBSITE = "https://github.com/Mistrzu4/my-font"
     LICENSE = "MIT"
-    ADMIN_SOURCE = "Settings.js:renderPluginSettings"
 
+    ADMIN_SOURCE = "Settings.js:renderPluginSettings"
+    
     SETTINGS = {
+        # Define your plugin settings here...
         'CUSTOM_VALUE': {
             'name': 'Custom Value',
             'description': 'A custom value',
@@ -26,40 +35,34 @@ class myfont(IconPackMixin, InvenTreePlugin):
             'default': 42,
         }
     }
+    
+    def view_hello(self, request):
+        return JsonResponse({"message": "Hello from plugin via UrlsMixin"})
+
+    # Definiujesz URL-e w stałej URLS
+    URLS = [
+        re_path(r"hello/$", view_hello, name="hello"),
+    ]
+
 
     def icon_packs(self):
-        font_url = static('plugins/myfont/icons/boxicons.ttf')
-
-        # DEBUG: zapisz URL do pliku w kontenerze
-        try:
-            with open("/tmp/myfont_url.txt", "w") as f:
-                f.write(font_url)
-        except Exception as e:
-            import traceback
-            with open("/tmp/myfont_url.txt", "w") as f:
-                f.write(f"ERROR: {e}\n{traceback.format_exc()}")
-
+        """Return a list of custom icon packs."""
         return [
             IconPack(
                 name='My Custom Icons',
                 prefix='my',
-                fonts={'truetype': font_url},
+                fonts={
+                    'truetype': static('plugins/my-custom-plugin/icons/boxicons.ttf'),
+                },
                 icons={
                     'my-icon': {
                         'name': 'My Icon',
                         'category': '',
                         'tags': ['my', 'icon'],
-                        'variants': {'default': 'bx-message-circle-heart'}
+                        'variants': {
+                            'default': 'bx-message-circle-heart'  # tylko nazwa ikony z fontu
+                        }
                     }
                 },
             )
         ]
-
-    def register_urls(self):
-        """Tymczasowy endpoint debugowy."""
-        def debug_font_url(request):
-            font_url = static('plugins/myfont/icons/boxicons.ttf')
-            return JsonResponse({"font_url": font_url})
-
-        return [
-            path("debug-font/", debug
