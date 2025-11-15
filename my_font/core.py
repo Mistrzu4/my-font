@@ -35,13 +35,13 @@ class myfont(IconPackMixin, InvenTreePlugin):
             'default': 42,
         }
     }
-    
-    def view_hello(self, request):
-        return JsonResponse({"message": "Hello from plugin via UrlsMixin"})
 
-    # Definiujesz URL-e w stałej URLS
-    URLS = [
-        re_path(r"hello/$", view_hello, name="hello"),
+    def debug_font_url(request):
+        font_url = static('plugins/myfont/icons/boxicons.ttf')
+        return JsonResponse({"font_url": font_url})
+
+    return [
+        path("debug-font/", debug_font_url),
     ]
 
 
