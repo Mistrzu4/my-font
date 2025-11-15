@@ -23,6 +23,19 @@ class myfont(IconPackMixin, InvenTreePlugin):
         return [path("debug-icon-packs/", debug_icon_packs)]
 
 
+    def register_urls(self):
+        """Zarejestruj tymczasowe URL do debugowania."""
+        from django.urls import path
+
+        def debug_font_url(request):
+            from django.templatetags.static import static
+            font_url = static('plugins/myfont/icons/boxicons.ttf')
+            return JsonResponse({"font_url": font_url})
+
+        return [
+            path("debug-font/", debug_font_url),
+        ]
+
     """myfont - custom InvenTree plugin."""
 
     # Plugin metadata
