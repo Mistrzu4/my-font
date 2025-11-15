@@ -26,11 +26,27 @@ class myfont(IconPackMixin, InvenTreePlugin):
         }
     }
 
-    def register_urls(self):
-        from django.urls import path
-        from django.http import JsonResponse
-        from django.templatetags.static import static
+    # 🔹 Ta metoda jest wymagana przez IconPackMixin
+    def icon_packs(self):
+        font_url = static('plugins/my-font/icons/boxicons.ttf')
+        return [
+            IconPack(
+                name='My Custom Icons',
+                prefix='my',
+                fonts={'truetype': font_url},
+                icons={
+                    'my-icon': {
+                        'name': 'My Icon',
+                        'category': '',
+                        'tags': ['my', 'icon'],
+                        'variants': {'default': 'bx-message-circle-heart'}
+                    }
+                }
+            )
+        ]
 
+    # 🔹 Debugowy endpoint
+    def register_urls(self):
         def debug_font_url(request):
             font_url = static('plugins/my-font/icons/boxicons.ttf')
             try:
@@ -41,6 +57,4 @@ class myfont(IconPackMixin, InvenTreePlugin):
                     f.write(f"ERROR: {e}")
             return JsonResponse({"font_url": font_url})
 
-        return [
-            path("debug-font/", debug_font_url),
-        ]
+        return [path("debug-font/", debug_font_url)]
